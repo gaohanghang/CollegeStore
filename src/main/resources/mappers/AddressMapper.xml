@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ghang.store.mapper.AddressMapper">
+	<!-- void addAddress(Address address); -->
+	<insert id="addAddress" useGeneratedKeys="true" keyProperty="id" parameterType="cn.ghang.store.bean.Address">
+		INSERT INTO
+			t_address
+		(
+			uid,
+			recv_person,
+			recv_province,recv_city,recv_area,
+			recv_district,
+			recv_addr,recv_phone,
+			recv_tel,recv_addr_code,
+			recv_name,is_default
+		)
+		VALUES
+		(
+			#{uid},
+			#{recvPerson},
+			#{recvProvince},#{recvCity},#{recvArea},
+			#{recvDistrict},
+			#{recvAddr},#{recvPhone},
+			#{recvTel},#{recvAddrCode},
+			#{recvName},
+			#{isDefault}
+		)
+	</insert>
+   
+	<!-- List<Address> getAddressList(Integer uid); -->
+	<select id="getAddressList"
+		resultType="cn.ghang.store.bean.Address">
+		SELECT 
+			id, uid,
+			recv_person		recvPerson,
+			recv_province	recvProvince, 
+			recv_city		recvCity, 
+			recv_area		recvArea, 
+			recv_district	recvDistrict, 
+			recv_addr		recvAddr, 
+			recv_addr_code	recvAddrCode, 
+			recv_phone		recvPhone, 
+			recv_tel		recvTel, 
+			recv_name		recvName, 
+			is_default		isDefault  
+		FROM 
+			t_address  
+		WHERE 
+			uid=#{uid}
+	</select>
+	
+		<!-- void delete(@Param("id") Integer id, 
+		@Param("uid") Integer uid);-->
+   <delete id="delete">
+		DELETE FROM 
+			t_address 
+		WHERE 
+			id=#{id} AND uid=#{uid}
+	</delete>
+	
+	<!-- Address getAddressById(@Param("id") Integer id, @Param("uid") Integer uid); -->
+	<select id="getAddressById" resultType="cn.ghang.store.bean.Address">
+		SELECT
+			id, 
+			uid,
+			recv_person		recvPerson,
+			recv_province	recvProvince, 
+			recv_city		recvCity, 
+			recv_area		recvArea, 
+			recv_district	recvDistrict, 
+			recv_addr		recvAddr, 
+			recv_addr_code	recvAddrCode, 
+			recv_phone		recvPhone, 
+			recv_tel		recvTel, 
+			recv_name		recvName, 
+			is_default		isDefault  
+		FROM
+			t_address
+		WHERE
+			id=#{id} AND uid=#{uid}
+	</select>
+	
+	<!-- void updateAddressById(Address address); -->
+	<update id="updateAddressById" parameterType="cn.ghang.store.bean.Address">
+		UPDATE
+			t_address
+		SET
+			recv_person 		= #{recvPerson},
+			recv_province 		= #{recvProvince},
+			recv_city			= #{recvCity},
+			recv_area			= #{recvArea},	
+			recv_district		= #{recvDistrict},
+			recv_addr			= #{recvAddr}, 
+			recv_addr_code		= #{recvAddrCode}, 
+			recv_name			= #{recvName}, 
+			recv_phone		= #{recvPhone}, 
+			recv_tel		= #{recvTel} 
+		WHERE 
+			uid=#{uid}
+			AND id=#{id}
+	</update>
+	
+	<!-- void setDefaultAddress(@Param("id") Integer id, @Param("uid") Integer uid); -->
+	<update id="setDefaultAddress">
+		UPDATE
+			t_address
+		SET
+			is_default=1
+		WHERE
+			id=#{id} AND uid=#{uid}
+	</update>
+
+	<!-- void cancelAllDefaultAddress(Integer uid); -->
+	<update id="cancelAllDefaultAddress">
+		UPDATE 
+			t_address 
+		SET 
+			is_default=0 
+		WHERE 
+			uid=#{uid}
+	</update>
+	
+	<!-- Integer getFirstRecordId(Integer uid); -->
+	<select id="getFirstRecordId" resultType="java.lang.Integer">
+		SELECT
+			id
+		FROM 
+			t_address
+		WHERE
+			uid=#{uid}
+		ORDER BY
+			id
+		LIMIT
+			0,1
+	</select>
+	
+	<!-- Integer getRecordCountByUid(Integer uid); -->
+	<select id="getRecordCountByUid" resultType="java.lang.Integer">
+		SELECT 
+			COUNT(id)
+		FROM 
+			t_goods   
+		LIMIT 
+			#{offset},25
+	</select>
+	
+</mapper>

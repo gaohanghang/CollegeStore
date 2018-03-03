@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ghang.store.mapper.GoodsMapper">
+	
+	<!-- List<Goods> 
+		getGoodsList(Integer offset); -->
+	<select id="getGoodsList"
+		resultType="cn.ghang.store.bean.Goods">
+		SELECT 
+			id,
+			category_id		categoryId,
+			item_type		itemType,
+			title,
+			sell_point		sellPoint,
+			price,
+			num,
+			barcode,
+			image,
+			status,
+			priority,
+			created_time	createdTime,
+			created_user	createdUser,
+			modified_time	modifiedTime,
+			modified_user	modifiedUser 
+		FROM 
+			t_goods   
+		LIMIT 
+			#{offset}, 25	
+	</select>
+
+	<!-- List<Goods> getGoodsListByCategoryId(
+		@Param("categoryId") 	Integer categoryId,
+		@Param("orderBy")		String orderBy, 
+		@Param("offset") 		Integer offset,
+		@Param("pageCount") 	Integer pageCount
+	); -->
+	<select id="getGoodsListByCategoryId"
+		resultType="cn.ghang.store.bean.Goods">
+		SELECT 
+			id,
+			category_id		categoryId,
+			item_type		itemType,
+			title,
+			sell_point		sellPoint,
+			price,
+			num,
+			barcode,
+			image,
+			status,
+			priority 
+		FROM 
+			t_goods 
+		WHERE 
+			category_id = #{categoryId}  
+			AND num > 0 
+			AND status = 1 
+		ORDER BY 
+		<if test="orderBy != null">
+			#{orderBy}
+		</if>
+		<if test="orderBy == null">
+			priority DESC 
+		</if>
+		<if test="offset != null">
+			LIMIT #{offset}, #{pageCount}
+		</if>
+	</select>
+	
+	<!-- Integer getRecordCountByCategoryId(
+			Integer categoryId); -->
+	<select id="getRecordCountByCategoryId"
+		resultType="java.lang.Integer">
+		SELECT 
+			COUNT(id) 
+		FROM 
+			t_goods
+		WHERE 
+			category_id=#{categoryId} 
+			AND status=1 AND num>0
+	</select>
+	
+	<!-- Goods getGoodsById(Integer id); -->
+	<select id="getGoodsById"
+		resultType="cn.ghang.store.bean.Goods">
+		SELECT 
+			id,
+			category_id		categoryId,
+			item_type		itemType,
+			title,
+			sell_point		sellPoint,
+			price,
+			num,
+			barcode,
+			image,
+			status,
+			priority
+		FROM 
+			t_goods  
+		WHERE  
+			id=#{id} 
+			AND status=1 AND num>0	
+	</select> 
+	
+	<!-- List<Goods> getGoodsListByItemType(String itemType); -->
+	<select id="getGoodsListByItemType"
+		resultType="cn.ghang.store.bean.Goods">
+		SELECT 
+			id, title, num  
+		FROM 
+			t_goods  
+		WHERE 
+			item_type=#{itemType} 
+		ORDER BY 
+			id DESC
+	</select>
+	
+</mapper>

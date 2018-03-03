@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ghang.store.mapper.CartMapper">
+	<!-- void add(Cart cart); -->
+	<insert id="add" parameterType="cn.ghang.store.bean.Cart"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			t_cart 
+			(user_id,goods_id,goods_title,goods_image,goods_price,num)
+		VALUES
+			(#{userId},#{goodsId},#{goodsTitle},#{goodsImage},#{goodsPrice},#{num})
+	</insert>
+	
+	<!-- List<Cart> getCartList(Integer uid); -->
+	<select id="getCartList" resultType="cn.ghang.store.bean.Cart">
+		SELECT
+			id,
+			user_id			userId,
+			goods_id 		goodsId,
+			goods_title 	goodsTitle,
+			goods_image 	goodsImage,
+			goods_price 	goodsPrice,
+			num 
+		FROM 
+			t_cart 
+		WHERE 
+			user_id=#{uid}
+	</select>
+	
+</mapper>
